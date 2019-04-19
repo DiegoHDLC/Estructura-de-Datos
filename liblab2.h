@@ -6,6 +6,12 @@ typedef struct _lista{
 	int cont;
 }ListaNumeros;
 
+/*struct timespec {                                                                                     
+	time_t   tv_sec;        /* seconds */                                                             
+    	/*long     tv_nsec;       /* nanoseconds */                                                         
+//};
+
+
 //Prototipos de los modulos.
 ListaNumeros *creaListaNumerosVacia(int tamano);
 ListaNumeros *creaListaNumerosLlena(int tamano, int max);
@@ -22,6 +28,7 @@ ListaNumeros *ordenarMenorMayor(ListaNumeros *);
 int buscaLugar(ListaNumeros *, int, int*);
 int comparaEnteros(const void *, const void *);
 int busquedaBinaria(ListaNumeros *,int);
+
 
 
 //tamano: tamaño del arreglo; - max: el número más grande que puede tener el arreglo.
@@ -44,8 +51,7 @@ ListaNumeros *creaListaNumerosLlena(int tamano, int max){
 	ListaNumeros *nuevaLista = creaListaNumerosVacia(tamano);
 	srand(time(NULL));
 	for(i = 0; i < nuevaLista->cantidadMaxima; i++){
-		//almacena números entre 0 y "max" dentro del arreglo.
-		nuevaLista->arreglo[i]= rand()%(max);
+		nuevaLista->arreglo[i]= rand()%(max);/*almacena números entre 0 y "max" dentro del arreglo.*/
 	}
 	nuevaLista->cantidadActual = nuevaLista->cantidadMaxima;
 	return nuevaLista;
@@ -53,8 +59,7 @@ ListaNumeros *creaListaNumerosLlena(int tamano, int max){
 
 //Libera la memoria ocupada por el arreglo y por la lista.
 int eliminaListaNumeros(ListaNumeros *unaListaNumeros){
-	//Verifica si la lista ha sido inicializada
-	if(unaListaNumeros->arreglo && unaListaNumeros != NULL){
+	if(unaListaNumeros->arreglo && unaListaNumeros != NULL){ /*Verifica si la lista ha sido inicializada*/
 		free(unaListaNumeros->arreglo);
 		free(unaListaNumeros);
 		return 1;
@@ -98,8 +103,7 @@ ListaNumeros *insertaEnOrden(ListaNumeros *listaActual, int unNumero){
 	
 	if(listaActual->cantidadActual < listaActual->cantidadMaxima){
 		buscaLugar(listaActual,unNumero,&posicion);
-		//corre los números de izquierda a derecha.
-		while(i > posicion){
+		while(i > posicion){ /*corre los números de izquierda a derecha.*/
 			listaActual->arreglo[i] = listaActual->arreglo[i-1];
 			i--;
 		}
@@ -158,25 +162,26 @@ int comparaEnteros(const void *p, const void *q){
 //Busca el número entregado por el usuario mediante busqueda binaria
 int busquedaBinaria(ListaNumeros *lista, int unNumero){
 	int inf,sup,mitad;
+	char band;
 	
+	band = 'F';
 	inf = 0;
-	sup = lista->cantidadMaxima;
+	sup = lista->cantidadMaxima - 1;
+	mitad = (sup + 1)/2;
 	
-	while((inf+1)!=sup){
-		mitad = (inf + sup)/2;
-		if(lista->arreglo[mitad] == unNumero){
-			return 1;
-		}
+	while(lista->arreglo[mitad] != unNumero && inf<sup){
 		if(lista->arreglo[mitad] > unNumero){
-			sup = mitad;
-			mitad = (inf + sup)/2;
+			sup = mitad -1;
+		}else{
+			inf = mitad + 1;
 		}
-		if(lista->arreglo[mitad] < unNumero){
-			inf = mitad;
-			mitad = (inf + sup)/2;
-		}
+		mitad = (inf+sup)/2;
+
 	}
-	return (-1);
+	if(lista->arreglo[mitad] == unNumero){
+		return 1;
+	}
+	return 0;
 }
 
 //ordena la lista de menor a mayor

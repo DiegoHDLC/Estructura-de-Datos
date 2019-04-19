@@ -8,6 +8,8 @@ void main(){
 	//unNumero: Número digitado por usuario para ser buscado.	 
 	int tamano = 5,max = 40, unNumero,i=0,p,opcion,dato;
 	char salir;
+	//struct timespec start, finish; 
+   
 	system("clear");
 	printf("1.-Caso base\n2.-Segundo Laboratorio\n3.-Salir\nOpcion: ");
 	scanf("%i",&opcion);
@@ -20,7 +22,6 @@ void main(){
 	switch(opcion){
 		case 1:
 			imprimirLista(unaListaNumeros);
-	
 			//El usuario digita un número para ser buscado dentro de la lista.
 			printf("\nDigite un número para buscarlo: ");
 			scanf("%i",&unNumero);
@@ -52,6 +53,7 @@ void main(){
 			scanf("%i",&opcion);
 			switch(opcion){
 				case 1:
+					//clock_gettime(CLOCK_REALTIME, &start); 
 					imprimirLista(lista1);
 
 					//Inserta numeros al final en un arreglo hasta completarlo (el número '0' da a entender que la casilla está vacía).
@@ -74,7 +76,16 @@ void main(){
 					}else{
 						printf("\nEl número %i no ha sido encontrado\n", unNumero);
 					}
+					//llama a la función eliminaListaNumeros, donde se libera la memoria creada para "unaListaNumeros" y "arreglo". 
+					if(eliminaListaNumeros(lista1)){
+						printf("\nLista eliminada con éxito\n");
+					}
+					else{
+						printf("\nNo hay lista para eliminar");
+					}
+					
 					;break;
+					//clock_gettime(CLOCK_REALTIME, &finish); 
 				case 2:
 //2.- Inserta en orden y usa búsqueda binaria.
 	
@@ -97,7 +108,7 @@ void main(){
 						imprimirLista(lista1);
 						printf("\nQué Número desea buscar en la lista?\nNúmero: ");
 						scanf("%i",&dato);
-						if(busquedaBinaria(lista1,dato)!=(-1)){
+						if(busquedaBinaria(lista1,dato)){
 							printf("\nNúmero %i encontrado\n", dato);
 						}else{
 							printf("\nEl número %i no ha sido encontrado\n",dato);
@@ -130,7 +141,7 @@ void main(){
 	
 			}
 			;break;
-			case 3 :break;
+		case 3 :break;
 	}
 }
 
