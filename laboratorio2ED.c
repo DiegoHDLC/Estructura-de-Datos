@@ -6,9 +6,9 @@
 void main(){
 	//tamano: tamaño del arreglo; - max: el número más grande que puede tener el arreglo.
 	//unNumero: Número digitado por usuario para ser buscado.	 
-	int tamano = 5,max = 40, unNumero,i=0,p,opcion,dato;
+	int tamano = (100000),max = 40000, unNumero,i=0,p,opcion,dato;
 	char salir;
-	//struct timespec start, finish; 
+	struct timespec start, finish; 
    
 	system("clear");
 	printf("1.-Caso base\n2.-Segundo Laboratorio\n3.-Salir\nOpcion: ");
@@ -16,8 +16,8 @@ void main(){
 	//CASO BASE
 	//Se llama al módulo creaListaNumerosLlena y se almacena la lista creada en la variable de tipo estructura "nuevaLista".
 	ListaNumeros *unaListaNumeros = creaListaNumerosLlena(tamano, max);
-	ListaNumeros *lista1 = creaListaNumerosVacia(tamano);
-	ListaNumeros *lista3 = creaListaNumerosVacia(tamano);
+	ListaNumeros *lista1 = creaListaNumerosLlena(tamano, max);//creaListaNumerosVacia(tamano);
+	ListaNumeros *lista3 = creaListaNumerosLlena(tamano, max);//creaListaNumerosVacia(tamano);
 	//Se llama al procedimiento imprimirLista, donde se le entrega la lista creada anteriormente, para imprimir la lista en consola.
 	switch(opcion){
 		case 1:
@@ -25,6 +25,7 @@ void main(){
 			//El usuario digita un número para ser buscado dentro de la lista.
 			printf("\nDigite un número para buscarlo: ");
 			scanf("%i",&unNumero);
+			clock_gettime(CLOCK_REALTIME, &start);
 	
 			//llama a la función buscaNumeroEnListaNumero, si encuentra un número: retorna 1 y si no lo encuentra retorna: -1.
 			if(buscaSecuencialNumeroEnListaNumeros(unaListaNumeros, unNumero)!=(-1)){
@@ -32,6 +33,11 @@ void main(){
 			}else{
 				printf("\nEl número %i no ha sido encontrado\n", unNumero);
 			}
+			clock_gettime(CLOCK_REALTIME, &finish);
+					printf("%ld segundos, %ld nanosegundos antes\n",start.tv_sec, start.tv_nsec);
+					printf("%ld segundos, %ld nanosegundos despúes\n",finish.tv_sec, finish.tv_nsec);
+					printf("%ld segundos %ld nanosegundos transcurridos\n",finish.tv_sec-start.tv_sec, finish.tv_nsec-start.tv_nsec);
+			
 		
 			//llama a la función eliminaListaNumeros, donde se libera la memoria creada para "unaListaNumeros" y "arreglo". 
 			if(eliminaListaNumeros(unaListaNumeros)){
@@ -53,7 +59,7 @@ void main(){
 			scanf("%i",&opcion);
 			switch(opcion){
 				case 1:
-					//clock_gettime(CLOCK_REALTIME, &start); 
+					clock_gettime(CLOCK_REALTIME, &start); 
 					imprimirLista(lista1);
 
 					//Inserta numeros al final en un arreglo hasta completarlo (el número '0' da a entender que la casilla está vacía).
@@ -83,16 +89,18 @@ void main(){
 					else{
 						printf("\nNo hay lista para eliminar");
 					}
-					
-					;break;
-					//clock_gettime(CLOCK_REALTIME, &finish); 
+					clock_gettime(CLOCK_REALTIME, &finish);
+					printf("%ld segundos, %ld nanosegundos antes\n",start.tv_sec, start.tv_nsec);
+					printf("%ld segundos, %ld nanosegundos despúes\n",finish.tv_sec, finish.tv_nsec);
+					printf("%ld segundos %ld nanosegundos transcurridos\n",finish.tv_sec-start.tv_sec, finish.tv_nsec-start.tv_nsec);
+					;break; 
 				case 2:
 //2.- Inserta en orden y usa búsqueda binaria.
 	
 					//Inserta en un numero en una lista ordenanda.
 					ordenamientoLista(lista1);
 					imprimirLista(lista1);
-					calcularEspacio(lista1);
+					/*calcularEspacio(lista1);
 					while(i<lista1->cantidadMaxima){
 						printf("\nDigite un número:"); 
 						scanf("%i",&unNumero);
@@ -100,7 +108,7 @@ void main(){
 						insertaEnOrden(lista1,unNumero);
 						imprimirLista(lista1);
 						i++;
-					}
+					}*/
 					//Busca un numero por busqueda binaria
 					if(lista1->cantidadActual == lista1->cantidadMaxima){
 						//primero ordenando de menor a mayor para utilizar busqueda binaria.
@@ -108,11 +116,16 @@ void main(){
 						imprimirLista(lista1);
 						printf("\nQué Número desea buscar en la lista?\nNúmero: ");
 						scanf("%i",&dato);
+						clock_gettime(CLOCK_REALTIME, &start); 
 						if(busquedaBinaria(lista1,dato)){
 							printf("\nNúmero %i encontrado\n", dato);
 						}else{
 							printf("\nEl número %i no ha sido encontrado\n",dato);
 						}
+						clock_gettime(CLOCK_REALTIME, &finish);
+					printf("%ld segundos, %ld nanosegundos antes\n",start.tv_sec, start.tv_nsec);
+					printf("%ld segundos, %ld nanosegundos despúes\n",finish.tv_sec, finish.tv_nsec);
+					printf("%ld segundos %ld nanosegundos transcurridos\n",finish.tv_sec-start.tv_sec, finish.tv_nsec-start.tv_nsec);
 					}
 					else{
 						printf("\nPrimero llene el arreglo de numeros");

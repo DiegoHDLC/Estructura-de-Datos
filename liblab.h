@@ -69,3 +69,7 @@ void imprimirLista(ListaNumeros *nuevaLista){
 	}
 	printf("\n");
 }
+
+int busquedaSecuencial(ListaNumeros 
+
+

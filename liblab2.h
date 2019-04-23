@@ -6,12 +6,6 @@ typedef struct _lista{
 	int cont;
 }ListaNumeros;
 
-/*struct timespec {                                                                                     
-	time_t   tv_sec;        /* seconds */                                                             
-    	/*long     tv_nsec;       /* nanoseconds */                                                         
-//};
-
-
 //Prototipos de los modulos.
 ListaNumeros *creaListaNumerosVacia(int tamano);
 ListaNumeros *creaListaNumerosLlena(int tamano, int max);
