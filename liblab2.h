@@ -15,6 +15,7 @@ int continuar(char*);
 //1.-
 ListaNumeros *insertaFinalLista(ListaNumeros *, int);
 int buscaSecuencialNumeroEnListaNumeros(ListaNumeros *, int);
+int crearNumeroAleatorio(int);
 //2.-
 ListaNumeros *ordenamientoLista(ListaNumeros *);
 ListaNumeros *calcularEspacio(ListaNumeros *);
@@ -22,15 +23,27 @@ ListaNumeros *ordenarMenorMayor(ListaNumeros *);
 int buscaLugar(ListaNumeros *, int, int*);
 int comparaEnteros(const void *, const void *);
 int busquedaBinaria(ListaNumeros *,int);
+int calculoTiempo(int _inicioSeg, int _finalSeg, int _restaSeg, int _restaNSeg);
 
 
 
 //tamano: tamaño del arreglo; - max: el número más grande que puede tener el arreglo.
 //unNumero: Número digitado por usuario para ser buscado.
 
+int crearNumeroAleatorio(int max){
+	time_t t;
+	int numero;
+	//srand((unsigned)time(&t));
+	
+	numero = 1 + rand()%max;
+	//sleep(1);
+	return numero;
+
+}
 //crea una lista llenandola con "ceros".
 ListaNumeros *creaListaNumerosVacia(int tamano){
 	int i=0;
+
 	ListaNumeros *nuevaLista = malloc(sizeof(ListaNumeros));
 	nuevaLista->cantidadActual = 0;
 	nuevaLista->cantidadMaxima = tamano;
@@ -65,6 +78,7 @@ int eliminaListaNumeros(ListaNumeros *unaListaNumeros){
 //Busca un número dictado por el usuario dentro del arreglo creado.
 int buscaSecuencialNumeroEnListaNumeros(ListaNumeros *unaListaNumeros, int unNumero){
 	int i;
+	
 	for(i=0; i < unaListaNumeros->cantidadMaxima; i++){
 		if(unaListaNumeros->arreglo[i] == unNumero){
 			return 1;
@@ -75,7 +89,7 @@ int buscaSecuencialNumeroEnListaNumeros(ListaNumeros *unaListaNumeros, int unNum
 
 //imprime los datos almacenados en la lista
 void imprimirLista(ListaNumeros *nuevaLista){
-	int i=0;
+	int i;
 	for(i=0; i < nuevaLista->cantidadMaxima; i++){
 		printf("Numero[%i]: %i \n",i+1,nuevaLista->arreglo[i]);
 	}
@@ -113,9 +127,11 @@ int buscaLugar(ListaNumeros *listaActual, int unNumero, int *i){
 	while(*i < listaActual->cantidadMaxima){
 		if(unNumero > listaActual->arreglo[*i]){
 			return *i;
+			printf("\n......\n");
 		}
 		(*i)++;
 	}
+	
 }
 
 //Calcula cuantos números hay en el arreglo (el número '0' cuenta como si la casilla estuviera vacía).
@@ -132,9 +148,9 @@ ListaNumeros *calcularEspacio(ListaNumeros *listaActual){
 }
 
 //Ordena la lista con el comando qSort
-ListaNumeros *ordenamientoLista(ListaNumeros *lista1){
-	qsort(lista1->arreglo,lista1->cantidadMaxima,sizeof(int), &comparaEnteros);
-	return lista1;
+ListaNumeros *ordenamientoLista(ListaNumeros *lista){
+	qsort(lista->arreglo,lista->cantidadMaxima,sizeof(int), &comparaEnteros);
+	return lista;
 }
 
 
@@ -198,10 +214,15 @@ ListaNumeros *ordenarMenorMayor(ListaNumeros *lista1){
 	return lista1;
 }
 
-/*int continuar(char *opcion){
-	if(*opcion == ('s'||'S')){
-		return 1;
-	}else if(*opcion == ('n'||'N')){
-		return 0;
+//pasa los segundos a nanosegundos
+int calculoTiempo(int _inicioSeg, int _finalSeg, int _restaSeg, int _restaNSeg){
+	int _total;
+	if(_restaSeg > 0){
+		_total = (_restaSeg*(10^9) + _finalSeg) - _inicioSeg;
 	}
-}*/
+	else{
+		_total = _restaSeg*(10^9) + _restaNSeg;
+	}
+	return _total;
+}
+
