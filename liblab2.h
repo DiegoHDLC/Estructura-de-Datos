@@ -11,11 +11,12 @@ ListaNumeros *creaListaNumerosVacia(int tamano);
 ListaNumeros *creaListaNumerosLlena(int tamano, int max);
 int eliminaListaNumeros(ListaNumeros *);
 void imprimirLista(ListaNumeros *);
-int continuar(char*);
 //1.-
+ListaNumeros *moduloInsertarFinal(ListaNumeros *, int);
 ListaNumeros *insertaFinalLista(ListaNumeros *, int);
 int buscaSecuencialNumeroEnListaNumeros(ListaNumeros *, int);
 int crearNumeroAleatorio(int);
+
 //2.-
 ListaNumeros *ordenamientoLista(ListaNumeros *);
 ListaNumeros *calcularEspacio(ListaNumeros *);
@@ -29,14 +30,18 @@ int calculoTiempo(int _inicioSeg, int _finalSeg, int _restaSeg, int _restaNSeg);
 
 //tamano: tamaño del arreglo; - max: el número más grande que puede tener el arreglo.
 //unNumero: Número digitado por usuario para ser buscado.
+ListaNumeros *moduloInsertarFinal(ListaNumeros *lista1,int max){
+	int i, unNumero;
+	for(i = 0; i < lista1->cantidadMaxima; i++){			
+		unNumero = crearNumeroAleatorio(max);
+		insertaFinalLista(lista1, unNumero);
+	}
+}
 
 int crearNumeroAleatorio(int max){
 	time_t t;
 	int numero;
-	//srand((unsigned)time(&t));
-	
 	numero = 1 + rand()%max;
-	//sleep(1);
 	return numero;
 
 }
@@ -104,32 +109,29 @@ ListaNumeros *insertaFinalLista(ListaNumeros *nuevaLista, int unNumero){
 }
 
 //Ordena una lista y luego inserta el numero entregado por el usuario;
-ListaNumeros *insertaEnOrden(ListaNumeros *listaActual, int unNumero){
+ListaNumeros *insertaEnOrden(ListaNumeros *lista, int unNumero){
 
 	//el valor de 'i' se iguala a la cantidad de datos que hay en el arreglo, esto se hace para empezara mover los datos desde el ultimo dato del arreglo.
-	int posicion = 0, i = listaActual->cantidadActual;
+	int posicion = 0, i = lista->cantidadActual;
 	
-	if(listaActual->cantidadActual < listaActual->cantidadMaxima){
-		buscaLugar(listaActual,unNumero,&posicion);
-		while(i > posicion){ /*corre los números de izquierda a derecha.*/
-			listaActual->arreglo[i] = listaActual->arreglo[i-1];
-			i--;
-		}
-		//agrega el número entregado por el usuario al arreglo.
-		listaActual->arreglo[posicion] = unNumero;
-		listaActual->cantidadActual++;
+	buscaLugar(lista,unNumero,&posicion);
+	while(i > posicion){ /*corre los números de izquierda a derecha.*/
+		lista->arreglo[i] = lista->arreglo[i-1];
+		i--;
 	}
-	return listaActual;
+	//agrega el número entregado por el usuario al arreglo.
+	lista->arreglo[posicion] = unNumero;
+	lista->cantidadActual++;
+	return lista;
 }
 
 //Busca el lugar donde insertar el número en el arreglo.
-int buscaLugar(ListaNumeros *listaActual, int unNumero, int *i){
-	while(*i < listaActual->cantidadMaxima){
-		if(unNumero > listaActual->arreglo[*i]){
-			return *i;
-			printf("\n......\n");
+int buscaLugar(ListaNumeros *listaActual, int unNumero, int *j){
+	while(*j < listaActual->cantidadMaxima){
+		if(unNumero > listaActual->arreglo[*j]){
+			return *j;
 		}
-		(*i)++;
+		(*j)++;
 	}
 	
 }

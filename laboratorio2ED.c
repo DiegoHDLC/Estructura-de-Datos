@@ -7,14 +7,14 @@
 void main(){
 	//tamano: tamaño del arreglo; - max: el número más grande que puede tener el arreglo.
 	//unNumero: Número digitado por usuario para ser buscado.	 
-	int tamano = 5,max = 100, unNumero,i=0,p,opcion,dato,pasadas=0;
+	int tamano = 1000,max = 100000, unNumero,i=0,p,opcion,dato,pasadas=0,pausa;
 	unsigned long tInsFinalSec, tInsFinalNSec, tiempoTotalIns;
 	unsigned long tBSecuencialSec, tBSecuencialNSec, tiempoTotalBus;
 	unsigned long tInsOrdSec, tInsOrdNSec, tiempoTotalInsOrd;
 	unsigned long tBBinariaSec, tBBinariaNSec, tiempoTotalBusBin;
-	//printf("%ld\n",sizeof(long));
+	srand(time(NULL));
 	char salir;
-	struct timespec startIns, finishIns, startBusSec, finishBusSec, startInsOrd, finishInsOrd, startBusBin, finishBusBin; 
+	struct timespec start, finish;
    
 	system("clear");
 	printf("1.-Caso base\n2.-Segundo Laboratorio\n3.-Salir\nOpcion: ");
@@ -22,7 +22,7 @@ void main(){
 	//CASO BASE
 	//Se llama al módulo creaListaNumerosLlena y se almacena la lista creada en la variable de tipo estructura "nuevaLista".
 	ListaNumeros *unaListaNumeros = creaListaNumerosVacia(tamano);
-	//ListaNumeros *lista1 = creaListaNumerosVacia(tamano);//creaListaNumerosVacia(tamano);
+	ListaNumeros *lista1 = creaListaNumerosVacia(tamano);//creaListaNumerosVacia(tamano);
 	ListaNumeros *lista3 = creaListaNumerosVacia(tamano);//creaListaNumerosVacia(tamano);
 	//Se llama al procedimiento imprimirLista, donde se le entrega la lista creada anteriormente, para imprimir la lista en consola.
 	switch(opcion){
@@ -50,41 +50,29 @@ void main(){
 			;break;
 		case 2:
 //SEGUNDO LABORATORIO
-//1.- Insertar al final y buscar secuencialmente.
-
-			//Se llama al módulo creaListaNumerosVacia y se almacena la lista creada en la variable de tipo estructura "nuevaLista".
-		
-			//Se llama al módulo imprimirLista, donde se le entrega la lista creada anteriormente, para imprimir la lista en consola.
 			
 			printf("1.-Insertar al final y buscar secuencialmente\n2.-Insertar en orden y usar busqueda binaria\n3.-Insertar siempre al final, ordenar despúes de cada inserción y usar busqueda binaria\nOpcion: ");
 			scanf("%i",&opcion);
 			switch(opcion){
 				case 1:
+//1.- Insertar al final y buscar secuencialmente.
+//Se llama al módulo creaListaNumerosVacia y se almacena la lista creada en la variable de tipo estructura "nuevaLista".
 				system("clear");
-				while(tamano <= 1000){
-					tamano = tamano + 1;
+				while(pasadas <= 1000){
+					tamano = tamano + 1000; //el tamaño maximo posible fue de 6.400.000 o se congela el proceso
 					ListaNumeros *lista1 = creaListaNumerosVacia(tamano);
 					//Inserta numeros al final en un arreglo hasta completarlo (el número '0' da a entender que la casilla está vacía).			
-					printf("\ncantidad maxima nueva 2222: %i\n",lista1->cantidadMaxima);
-					printf("\n.....\n");
-					clock_gettime(CLOCK_REALTIME, &startIns); 	/*inicia cronometro Insercion.*/
+					clock_gettime(CLOCK_REALTIME, &start); 	/*inicia cronometro Insercion.*/
+					moduloInsertarFinal(lista1,max);
+					clock_gettime(CLOCK_REALTIME, &finish);	/*finaliza cronometro Insercion.*/
 					
-					for(i = 0; i < lista1->cantidadMaxima; i++){
-						//system("clear");
-						unNumero = crearNumeroAleatorio(max);
-						insertaFinalLista(lista1, unNumero);
-					}
+					tInsFinalSec = finish.tv_sec - start.tv_sec;
+					tInsFinalNSec = finish.tv_nsec - start.tv_nsec;
+					//cambia los segundos a nanosegundos.
+					tiempoTotalIns = calculoTiempo(start.tv_sec,finish.tv_sec,tInsFinalSec,tInsFinalNSec);
 					
-					imprimirLista(lista1);
-					clock_gettime(CLOCK_REALTIME, &finishIns);	/*finaliza cronometro Insercion.*/
-					
-					tInsFinalSec = finishIns.tv_sec - startIns.tv_sec;
-					tInsFinalNSec = finishIns.tv_nsec - startIns.tv_nsec;
-				
-					tiempoTotalIns = calculoTiempo(startIns.tv_sec,finishIns.tv_sec,tInsFinalSec,tInsFinalNSec);
-					
-					clock_gettime(CLOCK_REALTIME, &startBusSec);	/*inicia cronometro busqueda secuencial.*/
-				 	unNumero = crearNumeroAleatorio(max);	/*Crea un numero para ser buscado.*/
+					unNumero = crearNumeroAleatorio(max);	/*Crea un numero para ser buscado.*/
+					clock_gettime(CLOCK_REALTIME, &start);	/*inicia cronometro busqueda secuencial.*/
 				 	//Busca secuencialmente un numero en el arreglo.
 					if(buscaSecuencialNumeroEnListaNumeros(lista1, unNumero)!=(-1)){
 						printf("\nNúmero %i encontrado\n", unNumero);
@@ -92,131 +80,111 @@ void main(){
 						printf("\nEl número %i no ha sido encontrado\n", unNumero);
 					}
 					
-					clock_gettime(CLOCK_REALTIME, &finishBusSec);	/*finaliza cronometro busqueda secuencial*/
+					clock_gettime(CLOCK_REALTIME, &finish);	/*finaliza cronometro busqueda secuencial*/
 					//almacena segundos y nanosegundos entregados por cronometro.
-					tBSecuencialSec = finishBusSec.tv_sec - startBusSec.tv_sec;
-					tBSecuencialNSec = finishBusSec.tv_nsec - startBusSec.tv_nsec;
+					tBSecuencialSec = finish.tv_sec - start.tv_sec;
+					tBSecuencialNSec = finish.tv_nsec - start.tv_nsec;
 					//cambia los segundos a nanosegundos.
-					tiempoTotalBus = calculoTiempo(startBusSec.tv_sec, finishBusSec.tv_sec, tBSecuencialSec, tBSecuencialNSec);
+					tiempoTotalBus = calculoTiempo(start.tv_sec, finish.tv_sec, tBSecuencialSec, tBSecuencialNSec);
 					printf("\npasadas: %i\ntamano: %i\ntiempo insercion: %ld [nseg]\ntiempo busqueda: %ld [nseg]\n\n", pasadas,tamano, tiempoTotalIns, tiempoTotalBus);
-						
-					//llama a la función eliminaListaNumeros, donde se libera la memoria creada para "unaListaNumeros" y "arreglo".
-					/*if(eliminaListaNumeros(lista1)){
-						printf("\nLista eliminada con éxito\n");
-					}
-					else{
-						printf("\nNo hay lista para eliminar");
-					}*/
 					pasadas++;
-				}
-					
+				}	
 				;break;
 				
 				case 2:
-					
-				while(tamano <= 1000){
-					ListaNumeros *lista1 = creaListaNumerosVacia(tamano);
-					tamano++;
 //2.- Inserta en orden y usa búsqueda binaria.
-			
-					//Inserta en un numero en una lista ordenanda.
-					ordenamientoLista(lista1);
-					
-					imprimirLista(lista1);
+				while(pasadas <= 1000){
+					ListaNumeros *lista1 = creaListaNumerosVacia(tamano);
+					tamano = tamano + 1000; /*el tamaño maximo posible fue de 6.400.000 o se congela el proceso*/
+					ordenamientoLista(lista1);	/*Ordena la lista de Mayor a menor.*/
 					calcularEspacio(lista1); 	/*calcula cuantos elementos hay en la lista y devuelve la cantidad*/
 					
-					
-					clock_gettime(CLOCK_REALTIME, &startInsOrd); 	/*inicia cronometro Insercion Ordenada.*/
+					clock_gettime(CLOCK_REALTIME, &start); 	/*inicia cronometro Insercion Ordenada.*/
 					for(i = 0; i<lista1->cantidadMaxima && lista1->cantidadActual < lista1->cantidadMaxima; i++){
 						unNumero = crearNumeroAleatorio(max);
 						insertaEnOrden(lista1,unNumero);
 					}
-					imprimirLista(lista1);
-					clock_gettime(CLOCK_REALTIME, &finishInsOrd);	/*finaliza cronometro Insercion Ordenada.*/
+					clock_gettime(CLOCK_REALTIME, &finish);	/*finaliza cronometro Insercion Ordenada.*/
+					//imprimirLista(lista1);
 					
-					tInsOrdSec = finishInsOrd.tv_sec - startInsOrd.tv_sec;
-					tInsOrdNSec = finishInsOrd.tv_nsec - startInsOrd.tv_nsec;
-					tiempoTotalInsOrd = calculoTiempo(startInsOrd.tv_sec, finishInsOrd.tv_sec, tInsOrdSec, tInsOrdNSec);
 					
-					if(lista1->cantidadActual == lista1->cantidadMaxima){ /*Busca un numero por busqueda binaria*/
-						
-						ordenarMenorMayor(lista1);	/*ordena de menor a mayor para utilizar busqueda binaria.*/
-						unNumero = crearNumeroAleatorio(max);
-						clock_gettime(CLOCK_REALTIME, &startBusBin);	/*inicia cronometro busqueda binaria.*/
-						if(busquedaBinaria(lista1,unNumero)){
-							printf("\nNúmero %i encontrado\n", unNumero);
-						}else{
-							printf("\nEl número %i no ha sido encontrado\n",unNumero);
-						}
-						clock_gettime(CLOCK_REALTIME, &finishBusBin);	/*finaliza cronometro busqueda binaria*/
-						
-						tBBinariaSec = finishBusBin.tv_sec - startBusBin.tv_sec;
-						tBBinariaNSec = finishBusBin.tv_nsec - startBusBin.tv_nsec;
-						tiempoTotalBusBin = calculoTiempo(startBusBin.tv_sec, finishBusBin.tv_sec, tBBinariaSec, tBBinariaNSec);	
+					tInsOrdSec = finish.tv_sec - start.tv_sec;
+					tInsOrdNSec = finish.tv_nsec - start.tv_nsec;
+					//cambia los segundos a nanosegundos.
+					tiempoTotalInsOrd = calculoTiempo(start.tv_sec, finish.tv_sec, tInsOrdSec, tInsOrdNSec);
+					ordenarMenorMayor(lista1);	/*ordena de menor a mayor para utilizar busqueda binaria.*/
+					unNumero = crearNumeroAleatorio(max);
+					
+					clock_gettime(CLOCK_REALTIME, &start);	/*inicia cronometro busqueda binaria.*/
+					if(busquedaBinaria(lista1,unNumero)){
+						printf("\nNúmero %i encontrado\n", unNumero);
+					}else{
+						printf("\nEl número %i no ha sido encontrado\n",unNumero);
 					}
-					else{
-						printf("\nPrimero llene el arreglo de numeros");
-					}
+					clock_gettime(CLOCK_REALTIME, &finish);	/*finaliza cronometro busqueda binaria*/
+					
+					tBBinariaSec = finish.tv_sec - start.tv_sec;
+					tBBinariaNSec = finish.tv_nsec - start.tv_nsec;
+					//cambia los segundos a nanosegundos.
+					tiempoTotalBusBin = calculoTiempo(start.tv_sec, finish.tv_sec, tBBinariaSec, tBBinariaNSec);	
+					
+					
 					printf("\npasadas: %i\ntamano: %i\ntiempo insercion: %ld [nseg]\ntiempo busqueda: %ld [nseg]\n\n",pasadas,tamano, tiempoTotalInsOrd, tiempoTotalBusBin);
 					pasadas++;
 				}
 				;break;
 				
 				case 3:
-				
-				//while(tamano <= 100){
 //3.- Insertar siempre al final, ordenar con quicksort después de cada inserción, y usar busqueda binaria.
-
-				//Inserta numeros al final en un arreglo hasta completarlo (el número '0' da a entender que la casilla está vacía).		
-					clock_gettime(CLOCK_REALTIME, &startIns); 
-					/*inicia cronometro Insercion.*/
+//Inserta numeros al final en un arreglo hasta completarlo (el número '0' da a entender que la casilla está vacía).
+				while(pasadas <= 1000){	
+					ListaNumeros *lista3 = creaListaNumerosVacia(tamano);//creaListaNumerosVacia(tamano);
+					tamano = tamano + 1000;
+					clock_gettime(CLOCK_REALTIME, &start); 	/*inicia cronometro Insercion.*/
+					i=0;
 					while(i < lista3->cantidadMaxima){
+						//system("clear");
 						unNumero = crearNumeroAleatorio(max);
+						//printf("\n.........\n");
 						insertaFinalLista(lista3, unNumero);
 						ordenamientoLista(lista3);
 						i++;
+						//printf("\ni: %i\n",i);
 					}
-					imprimirLista(lista3);
-					
-					clock_gettime(CLOCK_REALTIME, &finishIns);	/*finaliza cronometro Insercion.*/
-					tInsFinalSec = finishIns.tv_sec - startIns.tv_sec;
-					tInsFinalNSec = finishIns.tv_nsec - startIns.tv_nsec;
 				
-					tiempoTotalIns = calculoTiempo(startIns.tv_sec,finishIns.tv_sec,tInsFinalSec,tInsFinalNSec);
+					//imprimirLista(lista3);
+					//scanf("%i",&pausa);
+					
+					clock_gettime(CLOCK_REALTIME, &finish);	/*finaliza cronometro Insercion.*/
+					tInsFinalSec = finish.tv_sec - start.tv_sec;
+					tInsFinalNSec = finish.tv_nsec - start.tv_nsec;
+				
+					tiempoTotalIns = calculoTiempo(start.tv_sec,finish.tv_sec,tInsFinalSec,tInsFinalNSec);
 					
 					if(lista3->cantidadActual == lista3->cantidadMaxima){ /*Busca un numero por busqueda binaria*/
 						
 						ordenarMenorMayor(lista3);	/*ordena de menor a mayor para utilizar busqueda binaria.*/
 						unNumero = crearNumeroAleatorio(max);
-						clock_gettime(CLOCK_REALTIME, &startBusBin);	/*inicia cronometro busqueda binaria.*/
+						clock_gettime(CLOCK_REALTIME, &start);	/*inicia cronometro busqueda binaria.*/
 						if(busquedaBinaria(lista3,unNumero)){
 							printf("\nNúmero %i encontrado\n", unNumero);
 						}else{
 							printf("\nEl número %i no ha sido encontrado\n",unNumero);
 						}
-						clock_gettime(CLOCK_REALTIME, &finishBusBin);	/*finaliza cronometro busqueda binaria*/
+						clock_gettime(CLOCK_REALTIME, &finish);	/*finaliza cronometro busqueda binaria*/
 						
-						tBBinariaSec = finishBusBin.tv_sec - startBusBin.tv_sec;
-						tBBinariaNSec = finishBusBin.tv_nsec - startBusBin.tv_nsec;
-						tiempoTotalBusBin = calculoTiempo(startBusBin.tv_sec, finishBusBin.tv_sec, tBBinariaSec, tBBinariaNSec);	
+						tBBinariaSec = finish.tv_sec - start.tv_sec;
+						tBBinariaNSec = finish.tv_nsec - start.tv_nsec;
+						tiempoTotalBusBin = calculoTiempo(start.tv_sec, finish.tv_sec, tBBinariaSec, tBBinariaNSec);	
 					}
 					else{
 						printf("\nPrimero llene el arreglo de numeros");
 					}
 					printf("\npasadas: %i\ntamano: %i\ntiempo insercion: %ld [nseg]\ntiempo busqueda: %ld [nseg]\n\n",pasadas,tamano, tiempoTotalIns, tiempoTotalBusBin);
-				//	tamano = tamano + 1;
-				//	pasadas++;
-				//}	
+					//scanf("%i",&pausa);
+					pasadas = pasadas + 1;
+				}
 					;break;
-					case 4 : 
-						i=0;
-						while(i < 100){
-							unNumero = crearNumeroAleatorio(max);
-							printf("\nnumero : %i\n",unNumero);
-							//insertaFinalLista(lista1, unNumero);
-							i++;
-						}
-			;break;
 	
 			}
 			;break;
