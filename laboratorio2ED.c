@@ -6,14 +6,15 @@
 
 void main(){
 	//tamano: tamaño del arreglo; - max: el número más grande que puede tener el arreglo.
-	//unNumero: Número digitado por usuario para ser buscado.	 
-	int tamano = 1000,max = 100000, unNumero,i=0,p,opcion,dato,pasadas=0,pausa;
+	//unNumero: Número digitado por usuario para ser buscado.
+		 
+	int tamano = 1000,max = 100000, unNumero,i=0,p,opcion,dato,pasadas=1,pausa;
 	unsigned long tInsFinalSec, tInsFinalNSec, tiempoTotalIns;
 	unsigned long tBSecuencialSec, tBSecuencialNSec, tiempoTotalBus;
 	unsigned long tInsOrdSec, tInsOrdNSec, tiempoTotalInsOrd;
 	unsigned long tBBinariaSec, tBBinariaNSec, tiempoTotalBusBin;
-	srand(time(NULL));
 	char salir;
+	srand(time(NULL));
 	struct timespec start, finish;
    
 	system("clear");
@@ -71,7 +72,7 @@ void main(){
 					//cambia los segundos a nanosegundos.
 					tiempoTotalIns = calculoTiempo(start.tv_sec,finish.tv_sec,tInsFinalSec,tInsFinalNSec);
 					
-					unNumero = crearNumeroAleatorio(max);	/*Crea un numero para ser buscado.*/
+					unNumero = lista1->arreglo[lista1->cantidadMaxima-1]*(-1);/*Crea un numero para ser buscado.*/
 					clock_gettime(CLOCK_REALTIME, &start);	/*inicia cronometro busqueda secuencial.*/
 				 	//Busca secuencialmente un numero en el arreglo.
 					if(buscaSecuencialNumeroEnListaNumeros(lista1, unNumero)!=(-1)){
@@ -86,7 +87,8 @@ void main(){
 					tBSecuencialNSec = finish.tv_nsec - start.tv_nsec;
 					//cambia los segundos a nanosegundos.
 					tiempoTotalBus = calculoTiempo(start.tv_sec, finish.tv_sec, tBSecuencialSec, tBSecuencialNSec);
-					printf("\npasadas: %i\ntamano: %i\ntiempo insercion: %ld [nseg]\ntiempo busqueda: %ld [nseg]\n\n", pasadas,tamano, tiempoTotalIns, tiempoTotalBus);
+					guardarEnArchivo(pasadas,tamano,tiempoTotalIns,tiempoTotalBus,1);
+					//printf("\npasadas: %i\ntamano: %i\ntiempo insercion: %ld [nseg]\ntiempo busqueda: %ld [nseg]\n\n", pasadas,tamano, tiempoTotalIns, tiempoTotalBus);
 					pasadas++;
 				}	
 				;break;
@@ -105,8 +107,6 @@ void main(){
 						insertaEnOrden(lista1,unNumero);
 					}
 					clock_gettime(CLOCK_REALTIME, &finish);	/*finaliza cronometro Insercion Ordenada.*/
-					//imprimirLista(lista1);
-					
 					
 					tInsOrdSec = finish.tv_sec - start.tv_sec;
 					tInsOrdNSec = finish.tv_nsec - start.tv_nsec;
@@ -128,8 +128,8 @@ void main(){
 					//cambia los segundos a nanosegundos.
 					tiempoTotalBusBin = calculoTiempo(start.tv_sec, finish.tv_sec, tBBinariaSec, tBBinariaNSec);	
 					
-					
-					printf("\npasadas: %i\ntamano: %i\ntiempo insercion: %ld [nseg]\ntiempo busqueda: %ld [nseg]\n\n",pasadas,tamano, tiempoTotalInsOrd, tiempoTotalBusBin);
+					guardarEnArchivo(pasadas,tamano,tiempoTotalInsOrd,tiempoTotalBusBin,2);
+					//printf("\npasadas: %i\ntamano: %i\ntiempo insercion: %ld [nseg]\ntiempo busqueda: %ld [nseg]\n\n",pasadas,tamano, tiempoTotalInsOrd, tiempoTotalBusBin);
 					pasadas++;
 				}
 				;break;
@@ -143,17 +143,11 @@ void main(){
 					clock_gettime(CLOCK_REALTIME, &start); 	/*inicia cronometro Insercion.*/
 					i=0;
 					while(i < lista3->cantidadMaxima){
-						//system("clear");
 						unNumero = crearNumeroAleatorio(max);
-						//printf("\n.........\n");
 						insertaFinalLista(lista3, unNumero);
 						ordenamientoLista(lista3);
 						i++;
-						//printf("\ni: %i\n",i);
 					}
-				
-					//imprimirLista(lista3);
-					//scanf("%i",&pausa);
 					
 					clock_gettime(CLOCK_REALTIME, &finish);	/*finaliza cronometro Insercion.*/
 					tInsFinalSec = finish.tv_sec - start.tv_sec;

@@ -11,6 +11,7 @@ ListaNumeros *creaListaNumerosVacia(int tamano);
 ListaNumeros *creaListaNumerosLlena(int tamano, int max);
 int eliminaListaNumeros(ListaNumeros *);
 void imprimirLista(ListaNumeros *);
+int guardarEnArchivo(int, int, int, int, int);
 //1.-
 ListaNumeros *moduloInsertarFinal(ListaNumeros *, int);
 ListaNumeros *insertaFinalLista(ListaNumeros *, int);
@@ -30,6 +31,32 @@ int calculoTiempo(int _inicioSeg, int _finalSeg, int _restaSeg, int _restaNSeg);
 
 //tamano: tamaño del arreglo; - max: el número más grande que puede tener el arreglo.
 //unNumero: Número digitado por usuario para ser buscado.
+
+int guardarEnArchivo(int pasadas, int tamano, int tiempoTotalIns, int tiempoTotalBus, int caso){
+	FILE *fd;
+	if(fd == NULL){
+	//Da un mensaje de error al no existir el archivo archivoAlumnos.txt en este caso.
+	system("read -p 'Error al tratar de agregar datos al archivo\nPresione una tecla para continuar...' var");
+	return 1; //sale de la función;
+	}
+	if(caso == 1){
+	fd = fopen("laboratorio2ED_1.csv","at");
+	
+	}else{
+		if(caso == 2){
+		fd = fopen("laboratorio2ED_2.csv","at");
+		}
+	}
+	fprintf(fd,"%i", pasadas);
+	fprintf(fd,", %i, ", tamano);
+	fprintf(fd,", %i, ", tiempoTotalIns);
+	fprintf(fd,", %i, ", tamano);
+	fprintf(fd,", %i\n ", tiempoTotalBus);
+	fclose(fd);
+	
+	return 1;
+}
+
 ListaNumeros *moduloInsertarFinal(ListaNumeros *lista1,int max){
 	int i, unNumero;
 	for(i = 0; i < lista1->cantidadMaxima; i++){			
