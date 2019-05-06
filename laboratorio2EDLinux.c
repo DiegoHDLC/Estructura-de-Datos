@@ -136,7 +136,7 @@ void main(){
 		case 3:
 //SEGUNDO LABORATORIO
 			
-			printf("1.-Insertar al final y buscar secuencialmente\n2.-Insertar en orden y usar busqueda binaria\n3.-Insertar siempre al final, ordenar despÃºes de cada inserciÃ³n y usar busqueda binaria\n ");
+			printf("1.-Insertar al final y buscar secuencialmente\n2.-Insertar en orden y usar busqueda binaria\n3.-Insertar siempre al final, ordenar despues de cada insercion y usar busqueda binaria\n ");
 			printf("\n4.-Caso de prueba busqueda binaria (caso peor) con un arreglo de tamaño 500.000.000.000");
 			printf("\nOpcion=");
 			scanf("%i",&opcion);
@@ -145,7 +145,7 @@ void main(){
 //1.- Insertar al final y buscar secuencialmente.
 //Se llama al modulo creaListaNumerosVacia y se almacena la lista creada en la variable de tipo estructura "nuevaLista".
 				system("clear");
-				while(pasadas <= 50){ // se cuentan 50iteraciones de tamaÃ±o 100000
+				while(pasadas <= 1000){ // se cuentan 50iteraciones de tamaÃ±o 100000
 					
 					ListaNumeros *lista1 = creaListaNumerosVacia(tamano);
 					//Inserta numeros al final en un arreglo hasta completarlo (el numero '0' da a entender que la casilla estÃ¡ vacÃ­a).			
@@ -154,10 +154,6 @@ void main(){
 					end_t=clock();	/*finaliza cronometro Insertar.*/
 					total_t=(end_t - start_t);
 					tiempo_insertar=total_t;
-				
-					
-				
-					
 					
 					unNumero = -1;/*Crea un numero para ser buscado.*/
 					start_t=clock();	/*inicia cronometro busqueda secuencial.*/
@@ -176,7 +172,7 @@ void main(){
 					guardarEnArchivo(pasadas,tamano,tiempo_insertar,tiempo_buscar,1);
 					printf("\npasadas: %i\ntamano: %i\ntiempo insercion: %f [Mseg]\ntiempo busqueda: %f [Mseg]\n\n", pasadas,tamano, tiempo_insertar, tiempo_buscar);
 					pasadas++;
-					tamano = tamano + 1000000; //el tamano maximo posible fue de 6.400.000 o se congela el proceso
+					tamano = tamano + 1000; //el tamano maximo posible fue de 65.001.000 o se congela el proceso
 				}	
 				;break;
 				
@@ -189,7 +185,6 @@ void main(){
 					
 					ordenamientoLista(lista1);	/*Ordena la lista de Mayor a menor.*/
 					//calcularEspacio(lista1); 	calcula cuantos elementos hay en la lista y devuelve la cantidad
-				
 
 					start_t=clock(); 	/*inicia cronometro Insercion Ordenada.*/
 					lista1=InsertarVariosEnOrden(lista1,unNumero,max);
@@ -221,10 +216,8 @@ void main(){
 					guardarEnArchivo(pasadas,tamano,tiempo_insertar,tiempo_buscar,2);
 				
 					printf("\npasadas: %i\ntamano: %i\ntiempo insercion: %f [Mseg]\ntiempo busqueda: %f [Mseg]\n",pasadas,tamano, tiempo_insertar, tiempo_buscar);
-					//printf("\n");
-					//scanf("%i",&pausa);
 					pasadas++;
-					tamano = tamano + 1000; /*el tamano maximo posible fue de 6.400.000 o se congela el proceso*/
+					tamano = tamano + 1000; /*el tamano maximo posible fue de 65.001.000 o se congela el proceso*/
 				}
 				;break;
 				
@@ -270,11 +263,11 @@ void main(){
 					
 					guardarEnArchivo(pasadas,tamano,tiempo_insertar,tiempo_buscar,3);
 					tamano = tamano + 1000;
-					pasadas = pasadas + 1;
+					pasadas++;
 				}
 					;break;
 				case 4:
-					lista2=creaListaNumerosordenados(50000000000);
+					lista2=creaListaNumerosordenados(500000000);
 					
 					unNumero=-1;
 					
