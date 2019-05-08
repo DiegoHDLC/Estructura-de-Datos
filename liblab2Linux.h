@@ -72,10 +72,10 @@ int guardarEnArchivo(int pasadas, int tamano, int tiempoTotalIns, int tiempoTota
 		fd = fopen("laboratorio2ED_3.csv","at");
 	}
 	fprintf(fd,"%i", pasadas);
-	fprintf(fd,", %i, ", tamano);
-	fprintf(fd,", %i, ", tiempoTotalIns);
-	fprintf(fd,", %i, ", tamano);
-	fprintf(fd,", %i\n ", tiempoTotalBus);
+	fprintf(fd," %i ,", tamano);
+	fprintf(fd," %i ,", tiempoTotalIns);
+	fprintf(fd," %i ,", tamano);
+	fprintf(fd," %i\n ", tiempoTotalBus);
 	fclose(fd);
 	
 	return 1;
