@@ -16,8 +16,7 @@ void main(){
 	
 	char salir;
 	srand(time(NULL));
-	
-   
+
 	system("clear");
 	printf("1.-Caso base\n2.-Segundo Laboratorio\n3.-Segundo Laboratorio (experimentacion)\n4.-Salir\nOpcion: ");
 	scanf("%i",&opcion);
