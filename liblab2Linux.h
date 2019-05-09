@@ -36,16 +36,19 @@ int calculoTiempo(int _inicioSeg, int _finalSeg, int _restaSeg, int _restaNSeg);
 
 //tamano: tamaño del arreglo; - max: el número más grande que puede tener el arreglo.
 //unNumero: Número digitado por usuario para ser buscado.
+
+
 ListaNumeros *InsertarVariosAlFinal(ListaNumeros *lista3,int unNumero,int max){
 	int i=0;
 	while(i < lista3->cantidadMaxima){
 		unNumero = crearNumeroAleatorio(max);
-		lista3=insertaFinalLista(lista3, unNumero);
-		lista3=ordenamientoLista(lista3);
+		lista3 = insertaFinalLista(lista3, unNumero);
+		lista3 = ordenamientoLista(lista3);
 		i++;
 	}
 	return lista3;
 }
+//
 ListaNumeros *InsertarVariosEnOrden(ListaNumeros *lista1,int unNumero,int max){
 	int i;
 	for(i = 0; i<lista1->cantidadMaxima && lista1->cantidadActual < lista1->cantidadMaxima; i++){
