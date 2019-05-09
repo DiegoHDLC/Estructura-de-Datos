@@ -1,14 +1,14 @@
 Factores que afectan insercion y busqueda en relacion al tiempo:
 
--Tamaño del arreglo
+-TamaÃ±o del arreglo
 -La velocidad del procesador
 -la busqueda de cierto dato
 
 Caso peor= no esta el dato
 
-Tamaño posible para solicitar memoria:
-6.400.000
-500.000.000.000
+TamaÃ±o posible para solicitar memoria:
+65.001.000
+
 
 Factores del error de medicion:
 
@@ -24,6 +24,6 @@ relevantes:
 el uso de recursividad o iteracion para la insercion o busqueda
 afecta mucho en cuanto a gasto de memoria o procesador
 
-con un conjunto de datos pequeños no importa mucho cual estrategia
+con un conjunto de datos pequeÃ±os no importa mucho cual estrategia
 usar
 
