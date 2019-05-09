@@ -12,17 +12,18 @@ void main(){
 	float tiempo_insertar=0;
 	float tiempo_buscar=0;	
 	float aux=0;
-	int tamano = 1000,max = 100000, unNumero,i=0,p,opcion,dato,pasadas=1,pausa=0;
+	int tamano = 1000,max = 100000, unNumero,i=0,p,opcion,dato,pasadas=1;
 	
-	char salir;
+	
 	srand(time(NULL));
-
+	
+   
 	system("clear");
 	printf("1.-Caso base\n2.-Segundo Laboratorio\n3.-Segundo Laboratorio (experimentacion)\n4.-Salir\nOpcion: ");
 	scanf("%i",&opcion);
 	//CASO BASE
 	//Se llama al modulo creaListaNumerosLlena y se almacena la lista creada en un puntero de tipo estructura .
-	ListaNumeros *unaListaNumeros = creaListaNumerosVacia(tamano);
+	ListaNumeros *unaListaNumeros = creaListaNumerosLlena(tamano,max);
 	ListaNumeros *lista1 = creaListaNumerosVacia(tamano);
 	ListaNumeros *lista3 = creaListaNumerosVacia(tamano);
 	ListaNumeros *lista2 = creaListaNumerosVacia(tamano);
@@ -33,7 +34,6 @@ void main(){
 			//El usuario digita un numero para ser buscado dentro de la lista.
 			printf("Digite un numero para buscarlo: ");
 			scanf("%i",&unNumero);
-			
 	
 			//llama a la funcion buscaNumeroEnListaNumero, si encuentra un numero: retorna 1 y si no lo encuentra retorna: -1.
 			if(buscaSecuencialNumeroEnListaNumeros(unaListaNumeros, unNumero)!=(-1)){
@@ -68,7 +68,10 @@ void main(){
 						imprimirLista(lista1);
 						printf("\n¿Desea seguir añadiendo? (1 para si y 0 para no): ");
 						scanf("%i",&respuesta);
-											
+						if(lista1->cantidadActual>tamano2-1){
+							printf("\nLimite alcanzado\n");
+							break;
+						}					
 					}
 					printf("\nIndique un numero para buscarlo: ");
 					scanf("%i",&unNumero);
@@ -92,7 +95,10 @@ void main(){
 						imprimirLista(lista2);
 						printf("\n¿Desea seguir añadiendo? (1 para si y 0 para no): ");
 						scanf("%i",&respuesta);
-											
+						if(lista2->cantidadActual>tamano2-1){
+							printf("\nLimite alcanzado\n");
+							break;
+						}					
 					}
 					lista2=ordenarMenorMayor(lista2);
 					printf("\nIndique un numero para buscarlo: ");
@@ -119,6 +125,10 @@ void main(){
 						imprimirLista(lista3);
 						printf("\n¿Desea seguir añadiendo? (1 para si y 0 para no): ");
 						scanf("%i",&respuesta);
+						if(lista3->cantidadActual>tamano2-1){
+							printf("\nLimite alcanzado\n");
+							break;
+						}	
 											
 					}
 					
@@ -136,7 +146,6 @@ void main(){
 //SEGUNDO LABORATORIO
 			
 			printf("1.-Insertar al final y buscar secuencialmente\n2.-Insertar en orden y usar busqueda binaria\n3.-Insertar siempre al final, ordenar despues de cada insercion y usar busqueda binaria\n ");
-			printf("\n4.-Caso de prueba busqueda binaria (caso peor) con un arreglo de tamaño 500.000.000.000");
 			printf("\nOpcion=");
 			scanf("%i",&opcion);
 			switch(opcion){
@@ -144,7 +153,7 @@ void main(){
 //1.- Insertar al final y buscar secuencialmente.
 //Se llama al modulo creaListaNumerosVacia y se almacena la lista creada en la variable de tipo estructura "nuevaLista".
 				system("clear");
-				while(pasadas <= 1000){ // se cuentan 50iteraciones de tamaÃ±o 100000
+				while(pasadas <= 1000){ // se cuentan 1000 iteraciones
 					
 					ListaNumeros *lista1 = creaListaNumerosVacia(tamano);
 					//Inserta numeros al final en un arreglo hasta completarlo (el numero '0' da a entender que la casilla estÃ¡ vacÃ­a).			
@@ -205,12 +214,9 @@ void main(){
 						printf("\nEl numero %i no ha sido encontrado\n",unNumero);
 					}
 					end_t=clock();		/*finaliza cronometro busqueda binaria*/
-					printf("\n%i\n",pausa++);
 
 					total_t=(end_t-start_t);
 					tiempo_buscar=total_t;	
-				
-					
 					
 					guardarEnArchivo(pasadas,tamano,tiempo_insertar,tiempo_buscar,2);
 				
@@ -265,32 +271,7 @@ void main(){
 					pasadas++;
 				}
 					;break;
-				case 4:
-					lista2=creaListaNumerosordenados(500000000);
-					
-					unNumero=-1;
-					
-					start_t=clock();
-					aux=busquedaBinaria(lista2,unNumero);
-					end_t=clock();
-					total_t=(end_t-start_t);
-					aux=total_t;
-					aux=aux;
-					printf("\ntiempo busqueda= %f",aux);
-					
-					if(aux==1){
-						printf("\numero %i encontrado\n", unNumero);
-					}else{
-						printf("\nEl numero %i no ha sido encontrado\n",unNumero);
-					}
-					
-					
-
-
-					;break;
-	
 			}
 			;break;
-		
 	}
 }

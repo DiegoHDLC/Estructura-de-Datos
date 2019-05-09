@@ -30,25 +30,22 @@ ListaNumeros *InsertarVariosAlFinal(ListaNumeros *,int,int);
 int buscaLugar(ListaNumeros *, int, int*);
 int comparaEnteros(const void *, const void *);
 int busquedaBinaria(ListaNumeros *,int);
-int calculoTiempo(int _inicioSeg, int _finalSeg, int _restaSeg, int _restaNSeg);
 
 
 
 //tamano: tamaño del arreglo; - max: el número más grande que puede tener el arreglo.
 //unNumero: Número digitado por usuario para ser buscado.
-
-
 ListaNumeros *InsertarVariosAlFinal(ListaNumeros *lista3,int unNumero,int max){
 	int i=0;
 	while(i < lista3->cantidadMaxima){
 		unNumero = crearNumeroAleatorio(max);
-		lista3 = insertaFinalLista(lista3, unNumero);
-		lista3 = ordenamientoLista(lista3);
+		lista3=insertaFinalLista(lista3, unNumero);
+		lista3=ordenamientoLista(lista3);
 		i++;
 	}
 	return lista3;
 }
-//
+
 ListaNumeros *InsertarVariosEnOrden(ListaNumeros *lista1,int unNumero,int max){
 	int i;
 	for(i = 0; i<lista1->cantidadMaxima && lista1->cantidadActual < lista1->cantidadMaxima; i++){
@@ -75,9 +72,9 @@ int guardarEnArchivo(int pasadas, int tamano, int tiempoTotalIns, int tiempoTota
 		fd = fopen("laboratorio2ED_3.csv","at");
 	}
 	fprintf(fd,"%i", pasadas);
-	fprintf(fd," %i ,", tamano);
-	fprintf(fd," %i ,", tiempoTotalIns);
-	fprintf(fd," %i ,", tamano);
+	fprintf(fd,", %i, ", tamano);
+	fprintf(fd," %i, ", tiempoTotalIns);
+	fprintf(fd," %i, ", tamano);
 	fprintf(fd," %i\n ", tiempoTotalBus);
 	fclose(fd);
 	
@@ -93,7 +90,6 @@ ListaNumeros *moduloInsertarFinal(ListaNumeros *lista1,int max){
 }
 
 int crearNumeroAleatorio(int max){
-	time_t t;
 	int numero;
 	numero = 1 + rand()%max;
 	return numero;
@@ -161,7 +157,7 @@ int buscaSecuencialNumeroEnListaNumeros(ListaNumeros *unaListaNumeros, int unNum
 //imprime los datos almacenados en la lista
 void imprimirLista(ListaNumeros *nuevaLista){
 	int i;
-	for(i=0; i < nuevaLista->cantidadActual; i++){
+	for(i=0; i < nuevaLista->cantidadMaxima; i++){
 		printf("Numero[%i]: %i \n",i+1,nuevaLista->arreglo[i]);
 	}
 	printf("\n");
@@ -287,17 +283,5 @@ ListaNumeros *ordenarMenorMayor(ListaNumeros *lista1){
 			i++;
 		}
 	return lista1;
-}
-
-//pasa los segundos a nanosegundos
-int calculoTiempo(int _inicioSeg, int _finalSeg, int _restaSeg, int _restaNSeg){
-	int _total;
-	if(_restaSeg > 0){
-		_total = (_restaSeg*(10^9) + _finalSeg) - _inicioSeg;
-	}
-	else{
-		_total = _restaSeg*(10^9) + _restaNSeg;
-	}
-	return _total;
 }
 
